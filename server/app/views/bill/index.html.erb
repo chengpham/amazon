@@ -1,0 +1,30 @@
+<div class="container" style="max-width: 400px;">
+    <%= form_tag bill_submit_path, :class=>"form-group" %>
+        <%= label_tag :amount %>
+        <div class="input-group">
+            <div class="input-group-addon bg-secondary rounded-left text-white px-2 pt-1">$</div>
+            <%= text_field_tag :amount, @amount, :class=>'form-control', :required=>true %>
+         </div>
+        <%= label_tag :tax %>
+        <div class="input-group">
+            <div class="input-group-addon bg-secondary rounded-left text-white px-2 pt-1">%</div>
+            <%= text_field_tag :tax, @tax, :class=>'form-control', :required=>true %>
+         </div>
+        <%= label_tag :tip %>
+        <div class="input-group">
+            <div class="input-group-addon bg-secondary rounded-left text-white px-2 pt-1">%</div>
+            <%= text_field_tag :tip, @tip, :class=>'form-control', :required=>true %>
+         </div>
+        
+        <%= label_tag :number_of_people %>
+        <%= text_field_tag :num_of_people, @num_of_people, :class=>'form-control', :required=>true %>
+         <br>
+        <%= submit_tag "Submit", :class=>'btn btn-outline-danger btn-sm' %>
+        <br><br>
+        <% if @split_amount != 0 %>
+            <h4>Every person must pay <span class="label label-primary bg-danger rounded px-2">$<%= @split_amount.round(2) %></span></h4>
+        <% end %>
+
+</div>
+
+

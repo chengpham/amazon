@@ -1,0 +1,13 @@
+<h1>Showing Tags for: <%= @tags.name %></h1>
+
+<% @products.each do |product|%>
+<div class='container card' style="max-width: 992px;">
+<h3><%= link_to(product.title, product_path(product.id) )%></h3>
+<div><%= product.description %></div>
+<div>Tags: 
+<% product.tags.each do |tag| %>
+    <%= link_to(tag.name, tag_path(tag.id)) %>
+<% end %>
+</div>
+</div>
+<% end %>

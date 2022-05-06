@@ -1,0 +1,10 @@
+<h1>Liked Reviews</h1>
+
+<% @reviews.each do |review|%>
+<div class='container card' style="max-width: 992px;">
+<h3><%= link_to(product.title, product_path(product.id) )%> - <%= number_to_currency(product.price) %></h3>
+<p> <%= product.description %></p>
+<% if product.reviews_count %>
+<small> Reviews Count: <%= product.reviews_count %></small>
+</div>
+<% end %>

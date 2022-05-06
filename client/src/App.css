@@ -1,0 +1,31 @@
+.App {
+  text-align: center;
+}
+
+.header {
+  color: #61dafb;
+}
+.square {
+  margin: 10px;
+  width: 100px;
+  height: 100px;
+}
+.rectangle {
+  margin: 10px;
+  width: 160px;
+  height: 80px;
+}
+.triangle {
+  margin: 10px;
+  width: 0;
+  height: 0;
+  border-left: 50px solid white;
+  border-right: 50px solid white;
+  border-bottom: 100px solid transparent;
+}
+.circle {
+  margin: 10px;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%
+}

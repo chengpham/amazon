@@ -1,0 +1,7 @@
+<h1>Tags Index</h1>
+
+<% @tags.each do |tag|%>
+<div class='container card' style="max-width: 992px;">
+<h3><%= link_to(tag.name, tag_path(tag.id) )%></h3>
+</div>
+<% end %>

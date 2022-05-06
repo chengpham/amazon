@@ -1,0 +1,31 @@
+class Api::V1::SessionsController < Api::ApplicationController
+    def create
+        user=User.find_by(email: params[:email])
+        if user&.authenticate(params[:password])
+            session[:user_id]=user.id
+            render json:{id: user.id}
+        else
+            render(
+                json: {status: 404},
+                status: 404
+            )
+        end
+    end
+    def get_current_user
+        render json: {
+            id: current_user.id,
+            first_name: current_user.first_name,
+            last_name: current_user.last_name,
+            full_name: current_user.full_name,
+            created_at: current_user.created_at,
+            updated_at: current_user.updated_at
+        }
+    end
+    def destroy
+        session[:user_id]=nil
+        render(
+            json: {logged_out: true},
+            status: 200
+        )
+    end
+end

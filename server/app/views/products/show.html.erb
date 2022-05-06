@@ -1,0 +1,139 @@
+
+<div class="container card" style="max-width: 992px;">
+<h3><%= @product.title%> - <%= number_to_currency(@product.price) %> </h3>
+<p><%= @product.description %></p>
+<div>Tags: 
+  <%#= @product.tags.map(&:name).join(', ')  %> 
+  <% @product.tags.each do |tag| %>
+      <%= link_to(tag.name, tag_path(tag.id) ) %>
+  <% end %>
+</div>
+<div>
+<small> Created by: <%= @product.user.full_name || "DELETED" %> </small>
+<small> -- Last Edited : <%= time_ago_in_words(@product.updated_at)  %> -- </small>
+<small style="font-size:0.55em;">
+    <% if can? :crud, @product %>
+    <%= link_to "Edit", edit_product_path(@product.id) %> | 
+    <%= link_to "Delete", product_path, method: :delete,data:{confirm: "Are you sure ?"}, style: "color:red" %>
+    <% end %>
+</small><br>
+<% if user_signed_in?  && can?(:favourite, @product)%>
+          <% if @favourite %>
+          <span>Un-Favourite: </span>
+          <%= link_to favourite_path(@favourite), method: :delete do %>
+                <i class="fas fa-star"></i>
+            <% end %>
+            <%#= link_to 'Unfavourite', favourite_path(@favourite), method: :delete %>
+          <% else %>
+            <span>Favourite </span>
+            <%= link_to product_favourites_path(@product), method: :post do %>
+                <i class="far fa-star"></i>
+            <% end %>
+            <%#= link_to 'Favourite', product_favourites_path(@product), method: :post %>
+          <% end %>
+      <% end %>
+</div>
+<br>
+
+<h3>Add a review:</h3>
+<%= form_with model:[@product,@review],local: true do |form|%>
+<ul>
+    <% if @review.errors.full_messages.each do |msg|%>
+    <li><%= msg %></li>
+    <% end %>
+    <% end %>
+</ul>
+<div>
+<%= form.text_area :body, cols: 50, rows: 5, placeholder: 'Write a review.', class: "form-control" %>
+<span class='d-flex'>
+<%= form.number_field :rating, placeholder: :rating_between_1_and_5, min: 1, max: 5, class: "form-control" %>
+<%= form.submit  class: 'btn btn-outline-success' %></span>
+</div><br>
+<% end %> 
+
+
+<h3>Reviews</h3>
+
+<% @reviews.each do |review| %>
+<div>
+<% if can? :crud, review %>
+<%= display_stars(review) %>
+    <br><%= review.body %>
+    <div class='d-flex justify-content-between mt-2'>
+        <small> Reviewed by: <%= review.user&.full_name || "DELETED" %> </small>
+        <small>
+        <%= review.likes.count%> likes
+        <% if user_signed_in?  && can?(:like, review)%>
+            <% like = current_user.likes.find_by_review_id(review) %>
+            <% if like %>
+              <%= link_to 'Unlike', like_path(like), method: :delete %>
+            <% else %>
+              <%= link_to 'Like', review_likes_path(review), method: :post %>
+            <% end %>
+        <% end %>
+        </small>
+        <small>
+          <%= review.votes.count %> votes
+          <% if user_signed_in?  && can?(:like, review)%>
+              <% vote = current_user.votes.find_by_review_id(review) %>
+              <% if vote %>
+                <%= link_to 'Unvote', vote_path(vote), method: :delete %>
+              <% else %>
+                <%= link_to 'Vote', review_votes_path(review), method: :post %>
+              <% end %>
+          <% end %>
+          </small>
+<% if can? :crud, review %>
+    <small style="font-size:0.55em;">
+    <%= link_to "Delete", review_path(review), method: :delete,data: {confirm: "Are you sure?"}, style: "color:red" %>
+    <% if !review.hide %>
+        <%= link_to "Hide", review_path(review), method: :patch %>
+    <% else %>
+        <%= link_to "Unhide", review_path(review), method: :patch %>
+    <% end %>
+    </small>
+<% end %>
+</div>
+<hr>
+<% elsif !review.hide %>
+    <%= display_stars(review) %>
+    <br><%= review.body %>
+     <div class='d-flex justify-content-between mt-2'>
+        <small> Reviewed by: <%= review.user&.full_name || "DELETED" %> </small>
+         <small>
+        <%= review.likes.count%> likes
+        <% if user_signed_in?  && can?(:like, review)%>
+            <% like = current_user.likes.find_by_review_id(review) %>
+            <% if like %>
+              <%= link_to 'Unlike', like_path(like), method: :delete %>
+            <% else %>
+              <%= link_to 'Like', review_likes_path(review), method: :post %>
+            <% end %>
+        <% end %>
+         </small>
+         <small>
+          <%= review.votes.count %> votes
+          <% if user_signed_in?  && can?(:like, review)%>
+              <% vote = current_user.votes.find_by_review_id(review) %>
+              <% if vote %>
+                <%= link_to 'Unvote', vote_path(vote), method: :delete %>
+              <% else %>
+                <%= link_to 'Vote', review_votes_path(review), method: :post %>
+              <% end %>
+          <% end %>
+          </small>
+          <% if can? :crud, review %>
+          <small style="font-size:0.55em;">
+          <%= link_to "Delete", review_path(review), method: :delete,data: {confirm: "Are you sure?"}, style: "color:red" %>
+          <% if !review.hide %>
+              <%= link_to "Hide", review_path(review), method: :patch %>
+          <% else %>
+              <%= link_to "Unhide", review_path(review), method: :patch %>
+          <% end %>
+          </small>
+      <% end %>
+     </div>
+<% end %>
+</div>
+<% end %> 
+</div><br>

@@ -1,0 +1,16 @@
+<div class="container" style="max-width: 400px;">
+<%= form_tag contact_submit_path, :class=>"form-group" %>
+<div>
+    <%= label_tag :full_name %>
+    <%= text_field_tag :full_name, '', :class=>'form-control'%>
+</div>
+<div>
+    <%= label_tag :email %>
+    <%= email_field_tag :email,'', :class=>"form-control" %>
+</div>
+<div>
+    <%= label_tag :message %>
+    <%= text_area_tag :message,'', :class=>"form-control" %>
+</div><br>
+<%= submit_tag "Contact us", :class=>'btn btn-outline-primary btn-sm' %>
+</div>

@@ -1,0 +1,13 @@
+
+<% if @tag.present?  %>
+<h2>Showing Products tagged by: <%= @tag.name  %> </h2>
+
+<% end %>
+
+<% @products.each do |product|%>
+<div class='container card' style="max-width: 992px;">
+<h3><%= link_to(product.title, product_path(product.id) )%> - <%= number_to_currency(product.price) %></h3>
+<p> <%= product.description %></p>
+
+</div>
+<% end %>
